@@ -15,7 +15,7 @@
                         @endif
                         {{ __('You are logged in!') }}
                         <menu>
-                            <li><a href="/invoice/list/purchase">Purchase Invoice </a></li>
+                            <li class="menu-box"><a href="/invoice/list/purchase">Purchase Invoice </a></li>
                             <li><a href="/invoice/list/logistic">Logistic Purchase</a></li>
                             <li><a href="/invoice/list/do">DO</a></li>
                             <li><a class="" href="{{ route('logout') }}"
