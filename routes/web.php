@@ -28,8 +28,8 @@ Route::group([
     ]
 ], function () {
     Route::post('logout', [App\Http\Controllers\CustomAuthController::class, 'logout'])->name('logout');
-    Route::get('/menu', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-    Route::get('/invoice/list/{type}', [App\Http\Controllers\InvoiceController::class, 'index'])->name('invoice.index');
-    Route::get('/invoice/detail/{id}', [App\Http\Controllers\InvoiceController::class, 'show'])->name('invoice.detail');
-    Route::put('/invoice/update/{id}', [App\Http\Controllers\InvoiceController::class, 'update'])->name('invoice.update');
+    Route::get('menu', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+    Route::get('invoice/list/{type}', [App\Http\Controllers\InvoiceController::class, 'index'])->name('invoice.index');
+    Route::get('invoice/detail/{id}', [App\Http\Controllers\InvoiceController::class, 'show'])->name('invoice.detail');
+    Route::put('invoice/update/{id}', [App\Http\Controllers\InvoiceController::class, 'update'])->name('invoice.update');
 });

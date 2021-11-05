@@ -14,13 +14,13 @@
                         {{ session('status') }}
                     </div>
                 @endif
-                <a href="/invoice/list/purchase">
+                <a href="invoice/list/purchase">
                     <span>Purchase Invoice</span>
                 </a>
-                <a href="/invoice/list/logistic">
+                <a href="invoice/list/logistic">
                     <span>Logistic Purchase</span>
                 </a>
-                <a href="/invoice/list/do"><span>DO</span></a>
+                <a href="invoice/list/do"><span>DO</span></a>
                 <a href="{{ route('logout') }}"
                     onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                     <span>
