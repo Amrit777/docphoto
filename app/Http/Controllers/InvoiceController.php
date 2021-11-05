@@ -65,7 +65,7 @@ class InvoiceController extends Controller
                     ->make(true);
             }
         } else {
-            return redirect()->route('home');
+            return redirect('menu');
         }
         return view('invoice.list', ['docType' =>  $docType, 'type' => $type]);
     }

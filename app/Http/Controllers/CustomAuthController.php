@@ -40,10 +40,10 @@ class CustomAuthController extends Controller
                 $remember = true;
             }
             Auth::login($user, $remember);
-            return redirect()->intended('menu')
-                ->withSuccess('Signed in');
+            return redirect()->intended('menu');
         }
-        return redirect("login")->withSuccess('Login details are not valid');
+        \Session::flash('error', "Invalid Credentials Provided!");
+        return redirect("login");
     }
 
     public function logout()
