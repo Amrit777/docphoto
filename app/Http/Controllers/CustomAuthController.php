@@ -9,6 +9,20 @@ use Illuminate\Support\Facades\Session;
 
 class CustomAuthController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('guest')->except('logout');
+    }
+
+    public function welcome()
+    {
+        if (!Auth::user()) {
+            return redirect('login');
+        }
+        return redirect('menu');
+    }
+
+
     public function showLogin()
     {
         return view('auth.login');
@@ -21,8 +35,12 @@ class CustomAuthController extends Controller
             ->first();
 
         if (!empty($user)) {
-            Auth::login($user);
-            return redirect()->intended('home')
+            $remember = false;
+            if ($request->remember == 'on') {
+                $remember = true;
+            }
+            Auth::login($user, $remember);
+            return redirect()->intended('menu')
                 ->withSuccess('Signed in');
         }
         return redirect("login")->withSuccess('Login details are not valid');
@@ -32,7 +50,6 @@ class CustomAuthController extends Controller
     {
         Session::flush();
         Auth::logout();
-
         return Redirect('login');
     }
 }

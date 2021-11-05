@@ -5,40 +5,46 @@
         <div class="row justify-content-center">
             <div class="col-md-12">
                 <div class="card">
-                    <div class="card-header">{{ $docType }}</div>
-
-                    <div class="card-body">
-                        <section class="content">
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-12">
-                                        <div class="card">
-                                            <div class="card-body">
-                                                <table id="example1" class="table table-bordered table-striped data-table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Doc Id</th>
-                                                            <th>Doc Date</th>
-                                                            <th>Info1</th>
-                                                            <th>Info3</th>
-                                                            <th width="100px">Action</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                            <!-- /.card-body -->
-                                        </div>
-                                        <!-- /.card -->
-                                    </div>
-                                    <!-- /.row -->
-                                </div>
-                                <!-- /.container-fluid -->
-                        </section>
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-md-6 heading-title-list">
+                                {{ $docType }}
+                            </div>
+                            <div class="col-md-6 ">
+                                <a class="btn back-btn-grid" href="{{ route('home') }}">Back to Menu</a>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
+
+        {{-- <div class="card-body">
+                    <section class="content">
+                        <div class="container-fluid"> --}}
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    {{-- <div class="card-body"> --}}
+                    <table id="example1" class="table table-bordered table-striped data-table">
+                        <thead>
+                            <tr>
+                                <th>Doc Id</th>
+                                <th>Doc Date</th>
+                                <th>Info1</th>
+                                <th>Info3</th>
+                                <th width="100px">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                    </table>
+                    {{-- </div> --}}
+                    <!-- /.card-body -->
+                </div>
+                <!-- /.card -->
+            </div>
+            <!-- /.row -->
         </div>
     </div>
 @endsection
@@ -51,6 +57,7 @@
                 processing: true,
                 serverSide: true,
                 pageLength: 10,
+                pagingType: 'simple',
                 ajax: "{{ url('/invoice/list', [$type]) }}",
                 columns: [{
                         data: 'DocID',

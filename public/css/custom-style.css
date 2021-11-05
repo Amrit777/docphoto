@@ -1,0 +1,150 @@
+body {
+    overflow-y: scroll
+}
+
+.background-uprint {
+    background-color: #e8833a !important;
+}
+
+.navbar-light .navbar-brand {
+    color: #ffffff !important;
+}
+
+.navbar-light .navbar-nav .nav-link {
+    color: #ffffff !important;
+}
+
+a {
+    text-decoration: none;
+}
+
+li {
+    text-decoration: none;
+}
+
+.wrapper {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.wrapper a {
+    background-color: #e8833a;
+    border: 1px solid #e8833a;
+    color: white;
+    padding: 10px 24px;
+    cursor: pointer;
+    display: block;
+    line-height: 60px;
+    margin: 5px;
+    text-decoration: none;
+    font-weight: 500;
+    margin: 15px 0;
+    color: none;
+    font-size: 27px;
+    padding: 5px 30px;
+    border-radius: 5px;
+}
+
+input[readonly] {
+    background-color: lightyellow !important;
+}
+
+.btn-group button:not(:last-child) {
+    border-bottom: none;
+}
+
+.wrapper {
+    list-style: none;
+    text-align: center;
+}
+
+.wrapper a :hover {
+    text-decoration: none;
+}
+
+.wrapper a span {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+div.header-image {
+    justify-content: center;
+    margin-top: 30px;
+    margin-bottom: 40px;
+}
+
+.header-image img {
+    width: 200px;
+}
+
+.back-btn-grid {
+    color: #fff;
+    background-color: #e8833a;
+    border-color: #e8833a;
+    width: 50%;
+    float: right;
+}
+
+.heading-title-list {
+    font-size: 24px;
+    font-weight: bolder;
+}
+
+@media screen and (max-width: 768px) {
+    .wrapper a {
+        width: unset;
+        font-size: 24px;
+        font-weight: 1000;
+    }
+    .back-btn-grid {
+        margin-top: -34px;
+        margin-right: -10px;
+        width: 114px;
+    }
+    .heading-title-list {
+        font-size: 20px;
+        font-weight: 1000;
+    }
+    table.dataTable thead>tr>th.sorting_asc, table.dataTable thead>tr>th.sorting_desc, table.dataTable thead>tr>th.sorting, table.dataTable thead>tr>td.sorting_asc, table.dataTable thead>tr>td.sorting_desc, table.dataTable thead>tr>td.sorting {
+        padding-right: 0px;
+    }
+    table.table-bordered.dataTable tbody th, table.table-bordered.dataTable tbody td {
+        border-bottom-width: 0;
+        font-size: 12px;
+        font-weight: bolder;
+    }
+    .dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter {
+        float: left;
+        text-align: center;
+        margin-left: 5px;
+        margin-top: 10px;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .back-btn-grid {
+        margin-top: 0px;
+    }
+}
+
+@media screen and (max-width: 640px) {
+    .back-btn-grid {
+        margin-top: -34px;
+    }
+}
+
+.btn-block {
+    margin-top: 10px !important;
+}
+
+.file-caption-name:not(.file-caption-disabled) {
+    background-color: transparent !important;
+}
+
+.dataTables_wrapper .dataTables_length {
+    margin-top: 12px !important;
+}
+
+div.dataTables_wrapper div.dataTables_filter label {
+    margin-top: 12px !important;
+}

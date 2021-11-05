@@ -28,4 +28,9 @@ class DocMaster extends Model
         "CreateIP",
         "Info4"
     ];
+
+    public function trans()
+    {
+        return $this->hasOne(DocTrans::class, 'DocID', 'DocID');
+    }
 }

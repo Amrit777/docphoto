@@ -22,4 +22,3 @@ Route::post('login', [App\Http\Controllers\CustomAuthController::class,'attemptL
 Route::get('/invoice/list/{type}', [App\Http\Controllers\InvoiceController::class, 'index']);
 
 Route::put('/invoice/update/{id}', [App\Http\Controllers\InvoiceController::class, 'update']);
-

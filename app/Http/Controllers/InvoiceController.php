@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use DataTables;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\URL;
 
 class InvoiceController extends Controller
 {
@@ -101,6 +102,7 @@ class InvoiceController extends Controller
         $data = DocMaster::where("DocID", $id)->first();
 
         if (!empty($data)) {
+            $doctransdata = DocTrans::where('DocID', $id)->first();
             $docType = null;
             if ($data->DocType == 'Purchase Invoice') {
                 $docType = 'purchase';
@@ -111,10 +113,18 @@ class InvoiceController extends Controller
             if ($data->DocType == 'Good Received') {
                 $docType = 'do';
             }
-            return view('invoice.update', ['model' =>  $data, 'type' => $docType]);
-        } else {
-            return redirect()->route('home');
+            return view(
+                'invoice.update',
+                [
+                    'model' =>  $data,
+                    'type' => $docType,
+                    'transData' => $doctransdata,
+                    'lurl' => !empty($data->trans) ? $data->trans->Iurl : ""
+                ]
+            );
         }
+        \Session::flash('error', "Invalid Data Provided!");
+        return back();
     }
 
     /**
@@ -137,54 +147,54 @@ class InvoiceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // exec s_get_detail_data 'LP190200146'
-        $result = DB::select(
-            "SET NOCOUNT ON; exec s_get_detail_data ?;",
-            [
-                $id
-            ]
-        );
+        $data = DocMaster::where("DocID", $id)->first();
+        if (!empty($data)) {
+            $result = DB::select(
+                "SET NOCOUNT ON; exec s_get_detail_data ?;",
+                [
+                    $id
+                ]
+            );
 
-        if (!empty($result) && isset($result[0]->dataindex) && ($result[0]->dataindex < 0)) {
-            // insert to doc_trans
-
-            // @docid as docid,@visionid as visionid, @dataindex as dataindex,  @filename as filename, 
-            // @dataurl as dataurl, @lurl as lurl
-
-
-            $insertModel = new DocTrans();
-            $insertModel->DocID = $result[0]->docid;
-            $insertModel->VisionID = $result[0]->visionid;
-            $insertModel->DataIndex = $result[0]->dataindex;
-            $insertModel->DataUrl = $result[0]->dataurl; // will be changed according to file uploaded
-            $insertModel->FileName = $result[0]->filename;
-            $insertModel->Keterangan = $request->filled('Info4') ? $request->Info4 : "";
-            $insertModel->CreateID = Auth::user()->employee_id;
-            $insertModel->CreateDate = Carbon::now()->toString();
-            $insertModel->isSync = 'Y';
-            $insertModel->Iurl = $result[0]->lurl;
-            $insertModel->save();
-            // insert into doc_trans
-            // (docid, visionid, dataindex, dataurl, filename, CreateDate, issync, iurl, 
-            // select @docid, @visionid, @dataindex, @dataurl, @filename, getdate(), 'Y', @lurl
-
-
-            print_r($result);
-            die("fff");
-            if (!empty($result) && isset($result[0]->iserr)) {
-                if ($result[0]->iserr == 'Y') {
-                    return $this->failed(["errors" => $result[0]->errmsg]);
-                } elseif ($result[0]->iserr == 'N') {
-                    return $this->success("Invited successfully");
+            if (!empty($result) && isset($result[0]->dataindex) && !($result[0]->dataindex < 0)) {
+                $uploadedImage = '';
+                if ($request->hasFile('image')) {
+                    $uploadedImage = DocTrans::saveImage($request->image, $data->DocType, $id);
+                    if (empty($uploadedImage)) {
+                        \Session::flash('error', "Something went wrong while saving data. Please try again.");
+                        return back();
+                    }
                 }
+
+                $check  = DocTrans::where('DocID', $id)->where('VisionID', $result[0]->visionid)->first();
+
+                $insertData = [
+                    'DataIndex' => $result[0]->dataindex,
+                    'DataUrl' => URL::to('/'),
+                    'FileName' => !empty($uploadedImage) ? $uploadedImage['filename'] : (!empty($check) ? $check->FileName : ""),
+                    'Keterangan' => $request->filled('Keterangan') ? $request->Keterangan : "",
+                    'CreateID' => Auth::user()->employee_id,
+                    'CreateDate' => Carbon::now()->toDateTimeString(),
+                    'isSync' => 'Y',
+                    'Iurl' => !empty($uploadedImage) ? $uploadedImage['lurl'] : (!empty($check) ? $check->Iurl : "")
+                ];
+
+                if (!empty($check)) {
+                    DocTrans::where('DocID', $id)->where('VisionID', $result[0]->visionid)->update(
+                        $insertData
+                    );
+                } else {
+                    $insertData['DocID'] =  $id;
+                    $insertData['VisionID'] =  $result[0]->visionid;
+                    $insertModel = new DocTrans();
+                    $insertModel->create($insertData);
+                }
+                \Session::flash('success', "Record updated successfully");
+                return back();
             }
-            print_r($id);
-            die("fff");
-            return $id;
         }
-        // something went wrong as Doc ID is not there in the DB, return home.
-        // return view('invoice.update', ['model' =>  $data, 'type' => $docType]);
-        return redirect()->route('home');
+        \Session::flash('error', "Invalid Data Provided!");
+        return back();
     }
 
     /**
