@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <div class="row justify-content-center">
+        <div class="row">
             <div class="col-md-12">
                 <div class="card">
                     <div class="card-header">
@@ -19,32 +19,22 @@
             </div>
         </div>
 
-        {{-- <div class="card-body">
-                    <section class="content">
-                        <div class="container-fluid"> --}}
         <div class="row">
             <div class="col-12">
-                <div class="card">
-                    {{-- <div class="card-body"> --}}
-                    <table id="example1" class="table table-bordered table-striped data-table">
-                        <thead>
-                            <tr>
-                                <th>Doc Id</th>
-                                <th>Doc Date</th>
-                                <th>Info1</th>
-                                <th>Info3</th>
-                                <th width="100px">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    </table>
-                    {{-- </div> --}}
-                    <!-- /.card-body -->
-                </div>
-                <!-- /.card -->
+                <table id="example1" class="table table-bordered table-striped data-table">
+                    <thead>
+                        <tr>
+                            <th>Action</th>
+                            <th>Doc Id</th>
+                            <th>Doc Date</th>
+                            <th>Info1</th>
+                            <th>Info3</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
             </div>
-            <!-- /.row -->
         </div>
     </div>
 @endsection
@@ -59,7 +49,14 @@
                 pageLength: 10,
                 pagingType: 'simple',
                 ajax: "{{ url('/invoice/list', [$type]) }}",
+                aaSorting: [[ 2, "desc" ]],
                 columns: [{
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
                         data: 'DocID',
                         name: 'DocID'
                     },
@@ -75,12 +72,7 @@
                         data: 'Info3',
                         name: 'Info3'
                     },
-                    {
-                        data: 'action',
-                        name: 'action',
-                        orderable: false,
-                        searchable: false
-                    },
+
                 ]
             });
         });

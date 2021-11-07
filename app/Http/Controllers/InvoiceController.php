@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\InvoiceDataTable;
 use App\Models\DocMaster;
 use App\Models\DocTrans;
 use Carbon\Carbon;
@@ -54,6 +53,9 @@ class InvoiceController extends Controller
                 $data = $data->skip($start)->take($limit)->get();
 
                 return Datatables::of($data)
+                    ->editColumn('DocDate', function ($data) {
+                        return $data->DocDate ? with(new Carbon($data->DocDate))->format('m/d/Y') : '';
+                    })
                     ->setOffset($start)
                     ->with(['recordsTotal' => $totalData, "recordsFiltered" => $totalFiltered, 'start' => $start])
                     ->addIndexColumn()
@@ -113,10 +115,12 @@ class InvoiceController extends Controller
             if ($data->DocType == 'Good Received') {
                 $docType = 'do';
             }
+            $date = Carbon::parse($data['DocDate'])->format('d/m/Y');
             return view(
                 'invoice.update',
                 [
                     'model' =>  $data,
+                    'date' => $date,
                     'type' => $docType,
                     'transData' => $doctransdata,
                     'lurl' => !empty($data->trans) ? $data->trans->Iurl : ""
@@ -164,6 +168,11 @@ class InvoiceController extends Controller
                         \Session::flash('error', "Something went wrong while saving data. Please try again.");
                         return back();
                     }
+                } else {
+                    if (empty($request->image_link)) {
+                        \Session::flash('error', "Please add image/photo.");
+                        return back();
+                    }
                 }
 
                 $check  = DocTrans::where('DocID', $id)->where('VisionID', $result[0]->visionid)->first();
@@ -190,7 +199,7 @@ class InvoiceController extends Controller
                     $insertModel->create($insertData);
                 }
                 \Session::flash('success', "Record updated successfully");
-                return back();
+                return redirect()->route('invoice.index', ['type' => $request->type]);
             }
         }
         \Session::flash('error', "Invalid Data Provided!");

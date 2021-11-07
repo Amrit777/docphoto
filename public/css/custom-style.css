@@ -112,7 +112,7 @@ div.header-image {
     }
     table.table-bordered.dataTable tbody th, table.table-bordered.dataTable tbody td {
         border-bottom-width: 0;
-        font-size: 12px;
+        font-size: 0.6em !important;
         font-weight: bolder;
     }
     .dataTables_wrapper .dataTables_length, .dataTables_wrapper .dataTables_filter {

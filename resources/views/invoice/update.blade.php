@@ -1,3 +1,6 @@
+@php
+use Carbon\Carbon;
+@endphp
 @extends('layouts.dashboard')
 @section('styles')
     <!-- the fileinput plugin styling CSS file -->
@@ -28,7 +31,7 @@
                 <div class="card">
                     <div class="card-body">
                         <form action="{{ route('invoice.update', ['id' => $model->DocID]) }}" method="post"
-                            enctype="multipart/form-data">
+                            enctype="multipart/form-data" id="invoice-detail">
                             @csrf
                             {{ method_field('PUT') }}
 
@@ -47,7 +50,7 @@
                                 <div class="col-sm-10">
                                     <input id="DocDate" type="text"
                                         class="form-control{{ $errors->has('DocDate') ? ' is-invalid' : '' }}"
-                                        name="DocDate" value="{{ $model->DocDate }}" readonly>
+                                        name="DocDate" value="{{ $date }}" readonly>
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -96,10 +99,10 @@
                                 </div>
                             </div>
 
-
                             <div class="row">
                                 <div class="col-md-6">
-                                    <button type="submit" class="btn btn-primary btn-block btn-flat">Save</button>
+                                    <button type="submit" id="submitform"
+                                        class="btn btn-primary btn-block btn-flat">Save</button>
                                 </div>
                                 <div class="col-md-6">
                                     <a href="{{ route('invoice.index', ['type' => $type]) }}"
@@ -109,6 +112,9 @@
                     </div>
                 </div>
                 <br />
+                <input type="hidden" name="type" value="{{ $type }}" />
+                <input type="hidden" name="image_link" id="image_link"
+                    value="{{ !empty($transData && $transData->FileName) ? $transData->FileName : '' }}" />
                 </form>
             </div>
             <!-- /.card-body -->
@@ -138,9 +144,10 @@
                     showUpload: false,
                     showZoom: false,
                     showDrag: false,
-                    showClose: false
+                    showClose: false,
                 }
             });
+            $('button[type="button"].fileinput-remove').remove();
             $('button[type="button"].kv-file-remove').remove();
         });
     </script>
